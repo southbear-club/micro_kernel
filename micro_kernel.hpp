@@ -283,9 +283,7 @@ public:
         stream->to_.name = item->first.name;
         stream->to_.version = item->first.version;
 
-        bool ret = item->second->stream(stream);
-
-        return true;
+        return item->second->stream(stream);
     }
 
     // 日志

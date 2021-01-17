@@ -23,7 +23,7 @@ namespace Asty {
  */
 class MicroKernelThreadPool : public IThreadPool {
 public:
-    MicroKernelThreadPool(int task_limit = 100,
+    MicroKernelThreadPool(size_t task_limit = 100,
                           int thread_cnt = std::thread::hardware_concurrency())
         : queue_(task_limit), running_(false) {
         running_ = true;

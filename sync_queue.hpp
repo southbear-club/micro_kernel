@@ -9,6 +9,8 @@
  */
 #pragma once
 
+#include <stddef.h>
+
 namespace Asty {
 
 /**
@@ -27,7 +29,7 @@ public:
     virtual bool pop(T& t) = 0;
 
     // 队列数量
-    virtual int count(void) = 0;
+    virtual size_t count(void) = 0;
     // 队列空判
     virtual bool empty(void) = 0;
     // 队列满判

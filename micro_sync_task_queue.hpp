@@ -9,10 +9,11 @@
  */
 #pragma once
 
-#include <condition_variable>
+#include <stddef.h>
 #include <list>
-#include <mutex>
 #include <thread>
+#include <mutex>
+#include <condition_variable>
 #include "sync_queue.hpp"
 
 namespace Asty {
@@ -25,7 +26,7 @@ namespace Asty {
 template <typename T>
 class MicroSyncTaskQueue : public ISyncQueue<T> {
 public:
-    MicroSyncTaskQueue(int size) : max_size_(size) {}
+    MicroSyncTaskQueue(size_t size) : max_size_(size) {}
     virtual ~MicroSyncTaskQueue() { stop(); }
 
     // 入队
@@ -62,7 +63,7 @@ public:
     }
 
     // 队列内容数
-    virtual int count(void) override { return queue_.size(); }
+    virtual size_t count(void) override { return queue_.size(); }
 
     virtual bool empty(void) override { return queue_.empty(); }
 
@@ -84,7 +85,7 @@ private:
     std::mutex mutex_;                   ///< 队列锁
     std::condition_variable not_empty_;  ///< 非空条件变量
     std::condition_variable not_full_;   ///< 非满条件变量
-    int max_size_;                       ///< 任务队列限制
+    size_t max_size_;                       ///< 任务队列限制
     bool stop_;                          ///< 退出条件
 };
 
