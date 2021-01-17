@@ -15,6 +15,7 @@
 #include "micro_sync_task_queue.hpp"
 #include "thread_pool.hpp"
 
+namespace Asty {
 
 /**
  * @brief 微内核线程池
@@ -77,3 +78,5 @@ private:
     std::once_flag flag_;       ///< 标记
     std::mutex mutex_;          ///< 线程池锁
 };
+
+}

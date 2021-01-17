@@ -15,6 +15,8 @@
 #include "micro_thread_pool.hpp"
 #include "plugin.hpp"
 
+namespace Asty {
+
 #define MICRO_KERNEL_VERSION "1.0.0"
 
 /**
@@ -301,3 +303,5 @@ private:
     std::atomic_bool running_;                     ///< 微内核运行状态
     bool exit_;                                    ///< 微内核退出标记
 };
+
+}

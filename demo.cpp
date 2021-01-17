@@ -9,9 +9,10 @@
  */
 #include <string.h>
 #include <iostream>
-#include "src/micro_kernel.hpp"
-#include "src/plugin.hpp"
+#include "micro_kernel.hpp"
+#include "plugin.hpp"
 
+using namespace Asty;
 
 typedef enum : int {
     E_DOMAIN_BASIC = 0,

@@ -15,6 +15,8 @@
 #include <thread>
 #include "sync_queue.hpp"
 
+namespace Asty {
+
 /**
  * @brief 微内核任务队列
  * 
@@ -85,3 +87,5 @@ private:
     int max_size_;                       ///< 任务队列限制
     bool stop_;                          ///< 退出条件
 };
+
+}

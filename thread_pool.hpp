@@ -10,6 +10,8 @@
 #pragma once
 #include <functional>
 
+namespace Asty {
+
 /**
  * @brief 任务接口类型
  * 
@@ -32,3 +34,5 @@ public:
     // 添加任务
     virtual void add_task(const thread_task_t &task) = 0;
 };
+
+}

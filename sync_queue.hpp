@@ -9,6 +9,8 @@
  */
 #pragma once
 
+namespace Asty {
+
 /**
  * @brief 同步队列抽象接口
  *
@@ -33,3 +35,5 @@ public:
     // 退出队列
     virtual void stop(void) = 0;
 };
+
+}

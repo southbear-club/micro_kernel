@@ -16,6 +16,7 @@
 #include <memory>
 #include <string>
 
+namespace Asty {
 
 // 插件抽象类
 template <typename T>
@@ -233,3 +234,5 @@ private:
     plugin_run_status plugin_st_;              ///< 插件状态
     IMicroKernelServices<T> *mic_kernel_srv_;  ///< 微内核服务
 };
+
+}
