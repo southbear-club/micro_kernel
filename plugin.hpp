@@ -122,11 +122,7 @@ public:
     virtual std::string micro_kernel_version(void) = 0;
     // 插件数量
     virtual uint32_t plugin_cnt(void) = 0;
-    // 插件注册
-    virtual bool plugin_register(std::shared_ptr<IPlugin<T>> plugin) = 0;
-    // 插件注销
-    virtual bool plugin_unregister(const T &key) = 0;
-    // 信息查询
+    // 插件信息查询，不允许在init start stop exit插件接口内同步调用，否则会造成微内核死锁
     virtual bool plugin_key(const T &key, PluginKey<T> &item_key) = 0;
 
     // 消息分发
@@ -217,7 +213,7 @@ public:
                          PluginMessage<T> &response) = 0;
 
     // 流式消息处理
-    virtual bool stream(std::shared_ptr<IPluginStream<T>> &stream) = 0;
+    virtual bool stream(std::shared_ptr<IPluginStream<T>> stream) = 0;
 
 private:
     friend class MicroKernel<T>;

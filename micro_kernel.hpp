@@ -163,7 +163,7 @@ public:
     // 插件数量
     virtual uint32_t plugin_cnt(void) override { return plugins_.size(); }
     // 插件注册
-    virtual bool plugin_register(std::shared_ptr<IPlugin<T>> plugin) override {
+    bool plugin_register(std::shared_ptr<IPlugin<T>> plugin) {
         std::unique_lock<std::mutex> lck(mtx_);
 
         // 插件数量达到限制
@@ -194,7 +194,7 @@ public:
         return true;
     }
     // 插件注销
-    virtual bool plugin_unregister(const T &key) override {
+    bool plugin_unregister(const T &key) {
         std::unique_lock<std::mutex> lck(mtx_);
 
         PluginKey<T> plugin_key;
@@ -244,6 +244,8 @@ public:
     virtual bool message_dispatch(const PluginKey<T> &from, const T &to_key,
                                   const PluginDataT &request,
                                   PluginDataT &response) override {
+        std::unique_lock<std::mutex> lck(mtx_);
+
         PluginKey<T> to;
         to.key = to_key;
 
@@ -272,6 +274,8 @@ public:
     // 消息流分发
     virtual bool stream_dispatch(
         std::shared_ptr<IPluginStream<T>> stream) override {
+        std::unique_lock<std::mutex> lck(mtx_);
+
         auto item = plugins_.find(stream->to_);
 
         // 插件未找到
@@ -283,7 +287,12 @@ public:
         stream->to_.name = item->first.name;
         stream->to_.version = item->first.version;
 
-        return item->second->stream(stream);
+        auto plugin = item->second;
+
+        // 流式消息添加到线程池任务内去传递
+        thread_pool_->add_task([=] { plugin->stream(stream); });
+
+        return true;
     }
 
     // 日志
@@ -292,7 +301,7 @@ public:
     }
 
 private:
-    std::mutex mtx_;       ///< 操作锁
+    std::mutex mtx_;       ///< 操作锁，TODO:替换为读写锁
     std::string version_;  ///< 微内核版本
     uint32_t limit_;       ///< 插件数量限制
     std::map<PluginKey<T>, std::shared_ptr<IPlugin<T>>> plugins_;  ///< 插件列表
