@@ -68,7 +68,7 @@ public:
         for (auto &item : bad_plugin) {
             auto k = plugins_.find(item);
 
-            if (k == plugins_.end()) {
+            if (k != plugins_.end()) {
                 plugins_.erase(k);
             }
         }
@@ -93,7 +93,7 @@ public:
         for (auto &item : bad_plugin) {
             auto k = plugins_.find(item);
 
-            if (k == plugins_.end()) {
+            if (k != plugins_.end()) {
                 plugins_.erase(k);
             }
         }
@@ -260,6 +260,10 @@ public:
         to = item->first;
         to.key = to_key;
 
+        auto plugin = item->second;
+
+        lck.unlock();
+
         const PluginMessage<T> req_msg{from, to, request};
 
         PluginMessage<T> res_msg{to, (PluginKey<T>)from, response};
@@ -288,6 +292,8 @@ public:
         stream->to_.version = item->first.version;
 
         auto plugin = item->second;
+
+        lck.unlock();
 
         // 流式消息添加到线程池任务内去传递
         thread_pool_->add_task([=] { plugin->stream(stream); });
